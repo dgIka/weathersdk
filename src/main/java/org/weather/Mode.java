@@ -1,4 +1,4 @@
-package org.weather.model;
+package org.weather;
 
 public enum Mode {
     ON_DEMAND,

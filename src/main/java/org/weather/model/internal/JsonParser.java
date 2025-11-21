@@ -4,6 +4,7 @@ package org.weather.model.internal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.weather.WeatherSdkException;
 import org.weather.model.*;
 
 public class JsonParser {

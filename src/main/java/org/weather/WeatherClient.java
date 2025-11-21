@@ -1,7 +1,9 @@
-package org.weather.model;
+package org.weather;
 
 
+import org.weather.model.WeatherResponse;
 import org.weather.model.internal.CacheEntry;
+import org.weather.model.internal.HttpService;
 import org.weather.model.internal.JsonParser;
 import org.weather.model.internal.WeatherCache;
 
