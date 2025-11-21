@@ -5,8 +5,9 @@ import java.util.Map;
 
 public class WeatherCache {
 
+    private final long maxAgeMillis;
+
     private static final int MAX_CITIES = 10;
-    private static final long MAX_AGE_MILLIS = 10 * 60 * 1000;
 
     private final Map<String, CacheEntry> cache =
             new LinkedHashMap<String, CacheEntry>(16, 0.75f, true) {
@@ -15,6 +16,10 @@ public class WeatherCache {
                     return size() > MAX_CITIES;
                 }
             };
+
+    public WeatherCache(long maxAgeMillis) {
+        this.maxAgeMillis = maxAgeMillis;
+    }
 
     public synchronized CacheEntry get(String city) {
         return cache.get(city.toLowerCase());
@@ -25,6 +30,10 @@ public class WeatherCache {
     }
 
     public long getMaxAgeMillis() {
-        return MAX_AGE_MILLIS;
+        return maxAgeMillis;
+    }
+
+    public synchronized Map<String, CacheEntry> snapshot() {
+        return Map.copyOf(cache);
     }
 }
