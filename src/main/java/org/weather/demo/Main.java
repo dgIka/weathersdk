@@ -6,19 +6,15 @@ import org.weather.WeatherClientFactory;
 import org.weather.WeatherSdkException;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         String apiKey = "f47f306711763bf399af17bb6063209a";
 
-        WeatherClient client = WeatherClientFactory.getClient(apiKey, Mode.ON_DEMAND);
+        WeatherClient client = WeatherClientFactory.getClient(apiKey, Mode.POLLING);
 
-        try {
-            var weather = client.getCurrentWeather("London");
-            System.out.println("City: " + weather.name);
-            System.out.println("Desc: " + weather.weather.description);
-        } catch (WeatherSdkException e) {
-            e.printStackTrace();
-        } finally {
-            WeatherClientFactory.deleteClient(apiKey);
+        for (int i = 0; i < 5; i++) {
+            var w = client.getCurrentWeather("London");
+            System.out.println("Temp = " + w.temperature.temp);
+            Thread.sleep(5000);
         }
     }
 }

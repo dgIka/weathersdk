@@ -21,7 +21,7 @@ public class JsonParser {
 
             WeatherResponse resp = new WeatherResponse();
 
-            // weather[0]
+
             JsonNode weatherArray = root.path("weather");
             if (weatherArray.isArray() && weatherArray.size() > 0) {
                 JsonNode wNode = weatherArray.get(0);
@@ -31,7 +31,7 @@ public class JsonParser {
                 resp.weather = w;
             }
 
-            // main
+
             JsonNode mainNode = root.path("main");
             if (!mainNode.isMissingNode()) {
                 Temperature t = new Temperature();
@@ -40,10 +40,10 @@ public class JsonParser {
                 resp.temperature = t;
             }
 
-            // visibility
+
             resp.visibility = root.path("visibility").asInt(0);
 
-            // wind
+
             JsonNode windNode = root.path("wind");
             if (!windNode.isMissingNode()) {
                 Wind wind = new Wind();
@@ -62,7 +62,7 @@ public class JsonParser {
                 resp.sys = sys;
             }
 
-            // timezone, name
+
             resp.timezone = root.path("timezone").asInt(0);
             resp.name = root.path("name").asText(null);
 
