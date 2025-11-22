@@ -12,6 +12,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Main SDK client for accessing the OpenWeather API.
+ * <p>
+ * Supports two modes:
+ * <ul>
+ *   <li>ON_DEMAND — fetches data only on request</li>
+ *   <li>POLLING — periodically refreshes cached cities in the background</li>
+ * </ul>
+ * Instances must be created through {@link WeatherClientFactory}.
+ */
 public class WeatherClient {
 
     private static final long CACHE_MAX_AGE_MILLIS = 10 * 60 * 1000L;     // 10 минут
@@ -39,6 +49,16 @@ public class WeatherClient {
         return new WeatherClient(apiKey, mode);
     }
 
+    /**
+     * Returns current weather for the given city.
+     * <p>
+     * Uses cached value if it is not older than the configured max age;
+     * otherwise calls OpenWeather API and updates the cache.
+     *
+     * @param cityName city name to search for (the first matching city is used)
+     * @return normalized weather data for the city
+     * @throws WeatherSdkException if cityName is invalid, the API call fails, or the response cannot be parsed
+     */
     public WeatherResponse getCurrentWeather(String cityName) {
         if (cityName == null || cityName.isBlank()) {
             throw new WeatherSdkException("City name must not be null or blank");
@@ -93,6 +113,10 @@ public class WeatherClient {
         }
     }
 
+    /**
+     * Stops background polling (if enabled) and releases all internal resources.
+     * After calling this method the client should not be used anymore.
+     */
     public void shutdown() {
         if (scheduler != null) {
             scheduler.shutdownNow();
@@ -100,10 +124,16 @@ public class WeatherClient {
         }
     }
 
+    /**
+     * @return the OpenWeather API key used by this client
+     */
     public String getApiKey() {
         return apiKey;
     }
 
+    /**
+     * @return the operating mode of this client (ON_DEMAND or POLLING)
+     */
     public Mode getMode() {
         return mode;
     }

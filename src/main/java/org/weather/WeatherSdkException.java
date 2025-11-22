@@ -1,5 +1,8 @@
 package org.weather;
 
+/**
+ * Base exception type for all errors produced by the Weather SDK.
+ */
 public class WeatherSdkException extends RuntimeException {
 
     public WeatherSdkException(String message) {
